@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture Preview Columns</title>
+    <style>
+        @font-face {
+            font-family: 'YoungSerif';
+            src: url('YoungSerif.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'YoungSerif', serif;
+            background: #f8f9fa;
+        }
+
+        .top-section {
+            height: 65%;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            position: relative;
+        }
+
+        .preview-container {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            right: 30px;
+            bottom: 30px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            z-index: 100;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            aspect-ratio: 4/3;
+        }
+
+        .bottom-section {
+            height: 35%;
+            background: #f8f9fa;
+        }
+
+        .columns-container {
+            height: 100%;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .column {
+            flex: 0 0 33.33%;
+            height: 100%;
+            padding: 30px;
+            border-right: 1px solid #dee2e6;
+            overflow-y: hidden;
+            scroll-snap-align: start;
+            position: relative;
+        }
+
+        .column-title {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.03rem;
+        }
+
+        .column-content {
+            height: calc(100% - 60px);
+            margin-top: 60px;
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
+        }
+
+        .content-module {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            height: 100%;
+            display: flex;
+            padding-bottom: 30px;
+        }
+
+        .image-container {
+            flex: 0 0 55%;
+            aspect-ratio: 4/3;
+            background: #e9ecef;
+            overflow: hidden;
+        }
+
+        .content-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .text-content {
+            flex: 0 0 45%;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #555;
+            padding-left: 30px;
+        }
+
+        .columns-container::-webkit-scrollbar,
+        .column-content::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-section">
+        <div class="preview-container" id="previewContainer">
+            <img class="preview-image" id="previewImage">
+        </div>
+    </div>
+
+    <div class="bottom-section">
+        <div class="columns-container" id="columnsContainer">
+            <div class="column">
+                <div class="column-title">Studios</div>
+                <div class="column-content">
+                    <div class="content-module">
+                        <div class="image-container">
+                            <img src="https://picsum.photos/600/450" class="content-image" alt="Studio">
+                        </div>
+                        <div class="text-content">
+                            <p>Innovative architectural studio specializing in sustainable urban design solutions.</p>
+                        </div>
+                    </div>
+                    <!-- 9 duplicate modules -->
+                    <div class="content-module">
+                        <div class="image-container">
+                            <img src="https://picsum.photos/601/450" class="content-image" alt="Studio">
+                        </div>
+                        <div class="text-content">
+                            <p>Modern design firm focused on eco-friendly residential complexes.</p>
+                        </div>
+                    </div>
+                    <!-- Add 8 more modules as needed -->
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="column-title">Practitioners</div>
+                <div class="column-content">
+                    <div class="content-module">
+                        <div class="image-container">
+                            <img src="https://picsum.photos/602/450" class="content-image" alt="Practitioner">
+                        </div>
+                        <div class="text-content">
+                            <p>Lead architect with 20+ years experience in commercial and residential design.</p>
+                        </div>
+                    </div>
+                    <!-- 9 duplicate modules -->
+                    <div class="content-module">
+                        <div class="image-container">
+                            <img src="https://picsum.photos/603/450" class="content-image" alt="Practitioner">
+                        </div>
+                        <div class="text-content">
+                            <p>Urban planner specializing in smart city infrastructure.</p>
+                        </div>
+                    </div>
+                    <!-- Add 8 more modules as needed -->
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="column-title">Projects</div>
+                <div class="column-content">
+                    <div class="content-module">
+                        <div class="image-container">
+                            <img src="https://picsum.photos/604/450" class="content-image" alt="Project">
+                        </div>
+                        <div class="text-content">
+                            <p>Mixed-use development featuring integrated green spaces and renewable energy systems.</p>
+                        </div>
+                    </div>
+                    <!-- 9 duplicate modules -->
+                    <div class="content-module">
+                        <div class="image-container">
+                            <img src="https://picsum.photos/605/450" class="content-image" alt="Project">
+                        </div>
+                        <div class="text-content">
+                            <p>Sustainable high-rise with vertical gardens and passive cooling.</p>
+                        </div>
+                    </div>
+                    <!-- Add 8 more modules as needed -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const columnsContainer = document.getElementById('columnsContainer');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewImage = document.getElementById('previewImage');
+        const columns = Array.from(document.querySelectorAll('.column'));
+        let activeColumn = null;
+
+        // Initialize modules
+        columns.forEach(column => {
+            const content = column.querySelector('.column-content');
+            
+            // Clone existing modules
+            const existingModules = content.querySelectorAll('.content-module');
+            const modulesToAdd = 9 - existingModules.length;
+            
+            for(let i = 0; i < modulesToAdd; i++) {
+                const clone = existingModules[0].cloneNode(true);
+                const img = clone.querySelector('img');
+                img.src = `https://picsum.photos/${600 + i}/45${i % 10}`;
+                content.appendChild(clone);
+            }
+
+            // Image hover events
+            content.querySelectorAll('.content-image').forEach(img => {
+                img.addEventListener('mouseenter', () => {
+                    previewImage.src = img.src;
+                    previewContainer.style.display = 'flex';
+                });
+                img.addEventListener('mouseleave', () => {
+                    previewContainer.style.display = 'none';
+                });
+            });
+
+            // Vertical scroll
+            content.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const delta = Math.sign(e.deltaY);
+                content.scrollBy({
+                    top: delta * content.clientHeight,
+                    behavior: 'smooth'
+                });
+            }, { passive: false });
+
+            // Column hover detection
+            column.addEventListener('mouseenter', () => activeColumn = column);
+            column.addEventListener('mouseleave', () => activeColumn = null);
+        });
+
+        // Horizontal scroll
+        window.addEventListener('wheel', (e) => {
+            if(activeColumn) return;
+            e.preventDefault();
+            const delta = Math.sign(e.deltaY);
+            columnsContainer.scrollBy({
+                left: delta * columnsContainer.clientWidth,
+                behavior: 'smooth'
+            });
+        }, { passive: false });
+    </script>
+</body>
+</html>
