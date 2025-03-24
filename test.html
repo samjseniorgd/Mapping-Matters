@@ -139,7 +139,7 @@
         <div class="columns-container" id="columnsContainer">
             <div class="column">
                 <div class="column-title">Studios</div>
-                <div class="column-content">
+                <div class="column-content column-1">
                     <div class="content-module">
                         <div class="image-container">
                             <img src="images/Comedy-Carpet.jpg" class="content-image" alt="Studio">
@@ -163,7 +163,7 @@
 
             <div class="column">
                 <div class="column-title">Practitioners</div>
-                <div class="column-content">
+                <div class="column-content column-2">
                     <div class="content-module">
                         <div class="image-container">
                             <img src="https://picsum.photos/602/450" class="content-image" alt="Practitioner">
@@ -187,7 +187,7 @@
 
             <div class="column">
                 <div class="column-title">Projects</div>
-                <div class="column-content">
+                <div class="column-content column-3">
                     <div class="content-module">
                         <div class="image-container">
                             <img src="https://picsum.photos/604/450" class="content-image" alt="Project">
@@ -215,16 +215,19 @@
         const modules = [
             {
                 title: "Comedy Carpet",
+                column: 1,
                 image: "images/Comedy-Carpet.jpg",
                 description: "Innovative architectural studio specializing in sustainable urban design solutions."
             },
             {
                 title: "Big Hill",
+                column: 2,
                 image: "https://picsum.photos/604/450",
                 description: "Mixed-use development featuring integrated green spaces and renewable energy systems."
             },
             {
-                title: "Big Hill",
+                title: "Bigger Hill",
+                column: 3,
                 image: "https://picsum.photos/604/450",
                 description: "Mixed-use development featuring integrated green spaces and renewable energy systems."
             }
@@ -256,14 +259,20 @@
                     <img src="{{image}}" class="content-image" alt="{{title}}">
                 </div>
                 <div class="text-content">
-                    <p>{{description}}</p>
+                    <h2>{{title}}</h2>
+                    <p>sdfsdfs {{description}}</p>
                 </div>
             </div>
             `;
 
             modules.forEach(module => {
                 const html = renderTemplate(template, module);
-                content.insertAdjacentHTML("beforeend", html);
+                const columnClass = 'column-' + module.column
+                if (content.classList.contains(columnClass)) {
+                    content.insertAdjacentHTML("beforeend", html);
+                } else {
+                    console.log (content.classList)
+                }
             })
 
             // Image hover events
