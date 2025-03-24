@@ -142,7 +142,7 @@
                 <div class="column-content">
                     <div class="content-module">
                         <div class="image-container">
-                            <img src="https://picsum.photos/600/450" class="content-image" alt="Studio">
+                            <img src="images/Comedy-Carpet.jpg" class="content-image" alt="Studio">
                         </div>
                         <div class="text-content">
                             <p>Innovative architectural studio specializing in sustainable urban design solutions.</p>
@@ -212,6 +212,23 @@
     </div>
 
     <script>
+        const modules = [
+            {
+                title: "Comedy Carpet",
+                image: "images/Comedy-Carpet.jpg",
+                description: "Innovative architectural studio specializing in sustainable urban design solutions."
+            },
+            {
+                title: "Big Hill",
+                image: "https://picsum.photos/604/450",
+                description: "Mixed-use development featuring integrated green spaces and renewable energy systems."
+            },
+            {
+                title: "Big Hill",
+                image: "https://picsum.photos/604/450",
+                description: "Mixed-use development featuring integrated green spaces and renewable energy systems."
+            }
+        ];
         const columnsContainer = document.getElementById('columnsContainer');
         const previewContainer = document.getElementById('previewContainer');
         const previewImage = document.getElementById('previewImage');
@@ -226,12 +243,28 @@
             const existingModules = content.querySelectorAll('.content-module');
             const modulesToAdd = 9 - existingModules.length;
             
-            for(let i = 0; i < modulesToAdd; i++) {
-                const clone = existingModules[0].cloneNode(true);
-                const img = clone.querySelector('img');
-                img.src = `https://picsum.photos/${600 + i}/45${i % 10}`;
-                content.appendChild(clone);
-            }
+            // for(let i = 0; i < modulesToAdd; i++) {
+            //     const clone = existingModules[0].cloneNode(true);
+            //     const img = clone.querySelector('img');
+            //     img.src = `https://picsum.photos/${600 + i}/45${i % 10}`;
+            //     content.appendChild(clone);
+            // }
+
+            const template = `
+            <div class="content-module">
+                <div class="image-container">
+                    <img src="{{image}}" class="content-image" alt="{{title}}">
+                </div>
+                <div class="text-content">
+                    <p>{{description}}</p>
+                </div>
+            </div>
+            `;
+
+            modules.forEach(module => {
+                const html = renderTemplate(template, module);
+                content.insertAdjacentHTML("beforeend", html);
+            })
 
             // Image hover events
             content.querySelectorAll('.content-image').forEach(img => {
@@ -269,6 +302,13 @@
                 behavior: 'smooth'
             });
         }, { passive: false });
+
+        // Function to replace placeholders with data
+        function renderTemplate(templateStr, data) {
+            return templateStr.replace(/{{(.*?)}}/g, (match, key) => {
+                return data[key.trim()]; // Replace {{key}} with data[key]
+            });
+        }
     </script>
 </body>
 </html>
