@@ -1,305 +1,330 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Architecture Preview Columns</title>
-    <style>
-        @font-face {
-            font-family: 'YoungSerif';
-            src: url('Fonts/YoungSerif-Regular.otf') format('opentype');
-            font-weight: normal;
-            font-style: normal;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SJSGD Mapping-Matters</title>
+  <style>
+    @font-face {
+      font-family: 'YoungSerif';
+      src: url('Fonts/YoungSerif-Regular.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            height: 100vh;
-            overflow: hidden;
-            font-family: 'YoungSerif', serif;
-            background: #ffffff;
-        }
+    body {
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'YoungSerif', serif;
+      background: #ffffff;
+    }
 
-        .top-section {
-            height: 65%;
-            background: #ffffff;
-            border-bottom: 3px solid #000000;
-            position: relative;
-        }
+    .top-section {
+      height: 65%;
+      position: relative;
+      background: #ffffff;
+    }
 
-        .preview-container {
-            position: absolute;
-            top: 30px;
-            left: 30px;
-            right: 30px;
-            bottom: 30px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            background: #ffffff;
-            z-index: 100;
-        }
+    .top-section::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 30px;
+      right: 30px;
+      height: 3px;
+      background-color: #1d252d;
+    }
 
-        .preview-image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            aspect-ratio: 4/3;
-        }
+    .preview-container {
+      position: absolute;
+      top: 45px;
+      left: 30px;
+      right: 30px;
+      bottom: 45px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      z-index: 100;
+    }
 
-        .bottom-section {
-            height: 35%;
-            background: #ffffff;
-        }
+    .preview-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      aspect-ratio: 4/3;
+    }
 
-        .columns-container {
-            height: 100%;
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-        }
+    .bottom-section {
+      height: 35%;
+      background: #ffffff;
+    }
 
-        .column {
-            flex: 0 0 33.33%;
-            height: 100%;
-            padding: 30px;
-            border-right: 3px solid #000000;
-            overflow-y: hidden;
-            scroll-snap-align: start;
-            position: relative;
-        }
+    .columns-container {
+      height: 100%;
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+    }
 
-        .column-title {
-            position: absolute;
-            top: 30px;
-            left: 30px;
-            font-weight: bold;
-            text-transform: Titlecase;
-            font-size: 1.5rem;
-            line-height: 1.2;
-            letter-spacing: 0.03rem;
-            color:#000000;
-        }
+    .column {
+      flex: 0 0 33.33%;
+      height: 100%;
+      padding: 30px;
+      overflow-y: hidden;
+      scroll-snap-align: start;
+      position: relative;
+    }
 
-        .column-content {
-            height: calc(100% - 60px);
-            margin-top: 45px;
-            overflow-y: auto;
-            scroll-snap-type: y mandatory;
-        }
+    .column-title {
+      position: absolute;
+      top: 15px;
+      left: 30px;
+      font-weight: bold;
+      text-transform: normal;
+      font-size: 2rem;
+      letter-spacing: 0.03rem;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #1d252d;
+      width: calc(100% - 60px);
+    }
 
-        .content-module {
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            height: 100%;
-            display: flex;
-            padding-bottom: 30px;
-        }
+    .scroll-indicators {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      display: flex;
+      gap: 8px;
+    }
 
-        .image-container {
-            flex: 0 0 55%;
-            aspect-ratio: 4/3;
-            background: #ffffff;
-            overflow: hidden;
-        }
+    .scroll-indicator {
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: #1d252d;
+      user-select: none;
+    }
 
-        .content-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            cursor: pointer;
-        }
+    .column-content {
+      height: calc(100% - 60px);
+      margin-top: 60px;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+    }
 
-        .text-content {
-            flex: 0 0 45%;
-            font-size: 0.9rem;
-            line-height: 1.2;
-            color: #000000;
-            padding-left: 30px;
-        }
+    .content-module {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      height: 100%;
+      display: flex;
+      padding-bottom: 30px;
+    }
 
-        .columns-container::-webkit-scrollbar,
-        .column-content::-webkit-scrollbar {
-            display: none;
-        }
-    </style>
+    .image-container {
+      flex: 0 0 55%;
+      aspect-ratio: 4/3;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .content-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .text-content {
+      flex: 0 0 45%;
+      padding-left: 30px;
+    }
+
+    .column-heading {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1d252d;
+      margin-bottom: 10px;
+      letter-spacing: 0.02rem;
+    }
+
+    .column-body {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #1d252d;
+      margin-bottom: 20px;
+    }
+
+    .columns-container::-webkit-scrollbar,
+    .column-content::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="top-section">
-        <div class="preview-container" id="previewContainer">
-            <img class="preview-image" id="previewImage">
-        </div>
+  <div class="top-section">
+    <div class="preview-container" id="previewContainer">
+      <img class="preview-image" id="previewImage">
     </div>
+  </div>
 
-    <div class="bottom-section">
-        <div class="columns-container" id="columnsContainer">
-            <div class="column">
-                <div class="column-title">Studios</div>
-                <div class="column-content column-1">
-
-                </div>
-            </div>
-
-            <div class="column">
-                <div class="column-title">Practitioners</div>
-                <div class="column-content column-2">
-
-                </div>
-            </div>
-
-            <div class="column">
-                <div class="column-title">Projects</div>
-                <div class="column-content column-3">
-
-                </div>
-            </div>
-        </div>
+  <div class="bottom-section">
+    <div class="columns-container" id="columnsContainer">
+      <div class="column">
+        <div class="column-title">Studios</div>
+        <div class="scroll-indicators" id="scrollIndicators"></div>
+        <div class="column-content column-1"></div>
+      </div>
+      <div class="column">
+        <div class="column-title">Practitioners</div>
+        <div class="scroll-indicators"></div>
+        <div class="column-content column-2"></div>
+      </div>
+      <div class="column">
+        <div class="column-title">Projects</div>
+        <div class="scroll-indicators"></div>
+        <div class="column-content column-3"></div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        const modules = [
-            {
-                title: "The Office of Ordinary Things ",
-                column: 1,
-                image: "images/TOOT Mon Wide.jpg",
-                description: "Innovative architectural studio specializing in sustainable urban design solutions."
-            },
-            {
-                title: "Leap",
-                column: 1,
-                image: "images/LEAP Mon Wide.jpg",
-                description: "Mixed-use development featuring integrated green spaces and renewable energy systems."
-            },
-            {
-                title: "Pentagram",
-                column: 1,
-                image: "images/Pentagram Mon Wide.jpg",
-                description: "Mixed-use development featuring integrated green spaces and renewable energy systems."
-            },
-            {
-                title: "A-Side",
-                column: 1,
-                image: "images/A-Side Mon Wide.jpg",
-                description: "Mixed-use development featuring integrated green spaces and renewable energy systems."
-            },
-            {
-                title: "Field",
-                column: 1,
-                image: "images/Field Mon Wide.jpg",
-                description: "Mixed-use development featuring integrated green spaces and renewable energy systems."
-            },
-            {
-                title: "The Liminal Space",
-                column: 1,
-                image: "images/The Liminal Space Mon Wide.jpg",
-                description: "Mixed-use development featuring integrated green spaces and renewable energy systems."
-            },
-            {
-                title: "How & How",
-                column: 1,
-                image: "images/How & How Mon Wide.jpg",
-                description: "Mixed-use development featuring integrated green spaces and renewable energy systems."
-            },
-            {
-                title: "Instruct",
-                column: 1,
-                image: "images/Instruct Mon Wide.jpg",
-                description: "Mixed-use development featuring integrated green spaces and renewable energy systems."
-            },
-            {
-                title: "Order",
-                column: 1,
-                image: "images/Order Mon Wide.jpg",
-                description: "Mixed-use development featuring integrated green spaces and renewable energy systems."
-            },
-            {
-                title: "From Form",
-                column: 1,
-                image: "images/From Form Mon Wide.jpg",
-                description: "Mixed-use development featuring integrated green spaces and renewable energy systems."
-            }
-        ];
-        const columnsContainer = document.getElementById('columnsContainer');
-        const previewContainer = document.getElementById('previewContainer');
-        const previewImage = document.getElementById('previewImage');
-        const columns = Array.from(document.querySelectorAll('.column'));
-        let activeColumn = null;
-
-        // Initialize modules
-        columns.forEach(column => {
-            const content = column.querySelector('.column-content');
-            
-            // Clone existing modules
-            const existingModules = content.querySelectorAll('.content-module');
-            const modulesToAdd = 9 - existingModules.length;
-            
-            // for(let i = 0; i < modulesToAdd; i++) {
-            //     const clone = existingModules[0].cloneNode(true);
-            //     const img = clone.querySelector('img');
-            //     img.src = `https://picsum.photos/${600 + i}/45${i % 10}`;
-            //     content.appendChild(clone);
-            // }
-
-            const template = `
-            <div class="content-module">
-                <div class="image-container">
-                    <img src="{{image}}" class="content-image" alt="{{title}}">
-                </div>
-                <div class="text-content">
-                    <h2>{{title}}</h2>
-                    <p>sdfsdfs {{description}}</p>
-                </div>
-            </div>
-            `;
-
-            modules.forEach(module => {
-                const html = renderTemplate(template, module);
-                const columnClass = 'column-' + module.column
-                if (content.classList.contains(columnClass)) {
-                    content.insertAdjacentHTML("beforeend", html);
-                } else {
-                    console.log (content.classList)
-                }
-            })
-
-            // Image hover events
-            content.querySelectorAll('.content-image').forEach(img => {
-                img.addEventListener('mouseenter', () => {
-                    previewImage.src = img.src;
-                    previewContainer.style.display = 'flex';
-                });
-                img.addEventListener('mouseleave', () => {
-                    previewContainer.style.display = 'none';
-                });
-            });
-
-            // Vertical scroll
-            content.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                const delta = Math.sign(e.deltaY);
-                content.scrollBy({
-                    top: delta * content.clientHeight,
-                    behavior: 'smooth'
-                });
-            }, { passive: false });
-
-            // Column hover detection
-            column.addEventListener('mouseenter', () => activeColumn = column);
-            column.addEventListener('mouseleave', () => activeColumn = null);
+  <script>
+    const modules = [
+      { title: "The Office of Ordinary Things", column: 1, image: "images/TOOT Mon Wide.jpg", description: "Innovative architectural studio specializing in sustainable urban design solutions." },
+      { title: "Leap", column: 1, image: "images/LEAP Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Pentagram", column: 1, image: "images/Pentagram Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "A-Side", column: 1, image: "images/A-Side Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Field", column: 1, image: "images/Field Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "The Liminal Space", column: 1, image: "images/The Liminal Space Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "How & How", column: 1, image: "images/How & How Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Instruct", column: 1, image: "images/Instruct Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Order", column: 1, image: "images/Order Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "From Form", column: 1, image: "images/From Form Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Edd Carr", column: 2, image: "", description: "Innovative architectural studio specializing in sustainable urban design solutions." },
+      { title: "Georgia Lupi", column: 2, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Thijs Biersteker", column: 2, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Jacobo Cobian", column: 2, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Claire Huss", column: 2, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Harry Pearce", column: 2, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Mike McQuade", column: 2, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Talia Cotton", column: 2, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Chantal Jahchan", column: 2, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Oscar Warr", column: 2, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Seed Folk", column: 3, image: "", description: "Innovative architectural studio specializing in sustainable urban design solutions." },
+      { title: "Aruba Conservation Foundation", column: 3, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "WasteAge", column: 3, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "National Trust Quarry Bank", column: 3, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Don't Cry Wolf", column: 3, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "The Wild Escape", column: 3, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "New York Botanical Gardens", column: 3, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Daylight", column: 3, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "C-Skins", column: 3, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+      { title: "Cottage Road Cinema", column: 3, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." }
+    ];
+  
+    const circledNumbers = ['\u24EA', '\u2460', '\u2461', '\u2462', '\u2463', '\u2464', '\u2465', '\u2466', '\u2467', '\u2468', '\u2789'];
+    const filledNumbers = ['\u24FF', '\u2776', '\u2777', '\u2778', '\u2779', '\u277A', '\u277B', '\u277C', '\u277D', '\u277E', '\u277F'];
+  
+    const columnsContainer = document.getElementById('columnsContainer');
+    const previewContainer = document.getElementById('previewContainer');
+    const previewImage = document.getElementById('previewImage');
+    const columns = Array.from(document.querySelectorAll('.column'));
+    let activeColumn = null;
+  
+    columns.forEach((column, columnIndex) => {
+      const content = column.querySelector('.column-content');
+      const indicators = column.querySelector('.scroll-indicators');
+      const columnClass = `column-${columnIndex + 1}`;
+      const relevantModules = modules.filter(m => m.column === columnIndex + 1);
+  
+      const template = `
+        <div class="content-module">
+          <div class="image-container">
+            <img src="{{image}}" class="content-image" alt="{{title}}">
+          </div>
+          <div class="text-content">
+            <h2 class="column-heading">{{title}}</h2>
+            <p class="column-body">{{description}}</p>
+          </div>
+        </div>
+      `;
+  
+      const indicatorSpans = [];
+  
+      relevantModules.forEach((module, i) => {
+        content.insertAdjacentHTML('beforeend', renderTemplate(template, module));
+  
+        const indicator = document.createElement('span');
+        indicator.className = 'scroll-indicator';
+        indicator.textContent = circledNumbers[i + 1];
+        indicators.appendChild(indicator);
+        indicatorSpans.push(indicator);
+  
+        indicator.addEventListener('click', () => {
+          content.scrollTo({
+            top: i * content.clientHeight,
+            behavior: 'smooth'
+          });
         });
-
-        // Function to replace placeholders with data
-        function renderTemplate(templateStr, data) {
-            return templateStr.replace(/{{(.*?)}}/g, (match, key) => {
-                return data[key.trim()]; // Replace {{key}} with data[key]
+      });
+  
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const modules = Array.from(content.querySelectorAll('.content-module'));
+            const index = modules.indexOf(entry.target);
+            indicatorSpans.forEach((el, i) => {
+              el.textContent = (i === index) ? filledNumbers[i + 1] : circledNumbers[i + 1];
             });
-        }
-    </script>
+          }
+        });
+      }, {
+        root: content,
+        threshold: 0.6
+      });
+  
+      content.querySelectorAll('.content-module').forEach(module => observer.observe(module));
+  
+      content.querySelectorAll('.content-module').forEach(module => {
+        const img = module.querySelector('.content-image');
+        module.addEventListener('mouseenter', () => {
+          previewImage.src = img.src;
+          previewContainer.style.display = 'flex';
+        });
+        module.addEventListener('mouseleave', () => {
+          previewContainer.style.display = 'none';
+        });
+      });
+  
+      content.addEventListener('wheel', e => {
+        e.preventDefault();
+        content.scrollBy({
+          top: Math.sign(e.deltaY) * content.clientHeight,
+          behavior: 'smooth'
+        });
+      }, { passive: false });
+  
+      column.addEventListener('mouseenter', () => activeColumn = column);
+      column.addEventListener('mouseleave', () => activeColumn = null);
+    });
+  
+    window.addEventListener('wheel', e => {
+      if (activeColumn) return;
+      e.preventDefault();
+      columnsContainer.scrollBy({
+        left: Math.sign(e.deltaY) * columnsContainer.clientWidth,
+        behavior: 'smooth'
+      });
+    }, { passive: false });
+  
+    function renderTemplate(str, data) {
+      return str.replace(/{{(.*?)}}/g, (_, key) => data[key.trim()]);
+    }
+  </script>
 </body>
 </html>
