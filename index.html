@@ -88,6 +88,7 @@
       top: 15px;
       left: 30px;
       font-weight: bold;
+      color: #1d252d;
       text-transform: normal;
       font-size: 2rem;
       letter-spacing: 0.03rem;
@@ -106,7 +107,7 @@
 
     .scroll-indicator {
       cursor: pointer;
-      font-size: 1.5rem;
+      font-size: 1.75rem;
       color: #1d252d;
       user-select: none;
     }
@@ -146,7 +147,7 @@
     }
 
     .column-heading {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
       font-weight: 600;
       color: #1d252d;
       margin-bottom: 10px;
@@ -154,7 +155,7 @@
     }
 
     .column-body {
-      font-size: 0.9rem;
+      font-size: 1.0rem;
       line-height: 1.5;
       color: #1d252d;
       margin-bottom: 20px;
@@ -194,6 +195,28 @@
   </div>
 
   <script>
+    function smoothScrollTo(container, target, duration) {
+      const start = container.scrollTop;
+      const startTime = performance.now();
+
+      function animateScroll(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        container.scrollTop = start + (target - start) * progress;
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll);
+        }
+      }
+      requestAnimationFrame(animateScroll);
+    }
+
+    function scrollToStep(container, target, duration) {
+      return new Promise(resolve => {
+        smoothScrollTo(container, target, duration);
+        setTimeout(resolve, duration);
+      });
+    }
+
     const modules = [
       { title: "The Office of Ordinary Things", column: 1, image: "images/TOOT Mon Wide.jpg", description: "Innovative architectural studio specializing in sustainable urban design solutions." },
       { title: "Leap", column: 1, image: "images/LEAP Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
@@ -226,22 +249,22 @@
       { title: "C-Skins", column: 3, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
       { title: "Cottage Road Cinema", column: 3, image: "", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." }
     ];
-  
+
     const circledNumbers = ['\u24EA', '\u2460', '\u2461', '\u2462', '\u2463', '\u2464', '\u2465', '\u2466', '\u2467', '\u2468', '\u2789'];
     const filledNumbers = ['\u24FF', '\u2776', '\u2777', '\u2778', '\u2779', '\u277A', '\u277B', '\u277C', '\u277D', '\u277E', '\u277F'];
-  
+
     const columnsContainer = document.getElementById('columnsContainer');
     const previewContainer = document.getElementById('previewContainer');
     const previewImage = document.getElementById('previewImage');
     const columns = Array.from(document.querySelectorAll('.column'));
     let activeColumn = null;
-  
+
     columns.forEach((column, columnIndex) => {
       const content = column.querySelector('.column-content');
       const indicators = column.querySelector('.scroll-indicators');
       const columnClass = `column-${columnIndex + 1}`;
       const relevantModules = modules.filter(m => m.column === columnIndex + 1);
-  
+
       const template = `
         <div class="content-module">
           <div class="image-container">
@@ -253,26 +276,34 @@
           </div>
         </div>
       `;
-  
+
       const indicatorSpans = [];
-  
+
       relevantModules.forEach((module, i) => {
         content.insertAdjacentHTML('beforeend', renderTemplate(template, module));
-  
+
         const indicator = document.createElement('span');
         indicator.className = 'scroll-indicator';
         indicator.textContent = circledNumbers[i + 1];
         indicators.appendChild(indicator);
         indicatorSpans.push(indicator);
-  
-        indicator.addEventListener('click', () => {
-          content.scrollTo({
-            top: i * content.clientHeight,
-            behavior: 'smooth'
-          });
+
+        indicator.addEventListener('click', async () => {
+          const modules = Array.from(content.querySelectorAll('.content-module'));
+          const currentIndex = Math.round(content.scrollTop / content.clientHeight);
+          const targetIndex = i;
+
+          const step = targetIndex > currentIndex ? 1 : -1;
+          let index = currentIndex;
+
+          while (index !== targetIndex) {
+            index += step;
+            const offset = modules[index].offsetTop;
+            await scrollToStep(content, offset, 375);
+          }
         });
       });
-  
+
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -287,9 +318,9 @@
         root: content,
         threshold: 0.6
       });
-  
+
       content.querySelectorAll('.content-module').forEach(module => observer.observe(module));
-  
+
       content.querySelectorAll('.content-module').forEach(module => {
         const img = module.querySelector('.content-image');
         module.addEventListener('mouseenter', () => {
@@ -300,7 +331,7 @@
           previewContainer.style.display = 'none';
         });
       });
-  
+
       content.addEventListener('wheel', e => {
         e.preventDefault();
         content.scrollBy({
@@ -308,11 +339,11 @@
           behavior: 'smooth'
         });
       }, { passive: false });
-  
+
       column.addEventListener('mouseenter', () => activeColumn = column);
       column.addEventListener('mouseleave', () => activeColumn = null);
     });
-  
+
     window.addEventListener('wheel', e => {
       if (activeColumn) return;
       e.preventDefault();
@@ -321,7 +352,7 @@
         behavior: 'smooth'
       });
     }, { passive: false });
-  
+
     function renderTemplate(str, data) {
       return str.replace(/{{(.*?)}}/g, (_, key) => data[key.trim()]);
     }
