@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SJSGD Mapping-Matters - Scroll Locked Modules</title>
+  <style>
+    @font-face {
+      font-family: 'YoungSerif';
+      src: url('Fonts/YoungSerif-Regular.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'YoungSerif', serif;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    main {
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .section-title-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #ffffff;
+      z-index: 10;
+      padding: 30px;
+      border-bottom: 3px solid #1d252d;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #1d252d;
+    }
+
+    .content-module {
+      height: 100vh;
+      scroll-snap-align: start;
+      padding: 160px 30px 30px;
+      border-bottom: 3px solid #1d252d;
+    }
+
+    .content-module:last-child {
+      border-bottom: none;
+    }
+
+    .content-wrapper {
+      display: grid;
+      grid-template-columns: 55fr 45fr;
+      gap: 30px;
+      height: calc(100vh - 193px);
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .image-container {
+      background: #f0f0f0;
+      overflow: hidden;
+    }
+
+    .content-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .text-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-height: 0;
+    }
+
+    .column-heading {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1d252d;
+    }
+
+    .column-body {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #1d252d;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 768px) {
+      .content-wrapper {
+        grid-template-columns: 1fr;
+        height: auto;
+        gap: 20px;
+      }
+      
+      .content-module {
+        height: auto;
+        min-height: 100vh;
+        padding: 120px 20px 60px;
+      }
+
+      .image-container {
+        aspect-ratio: 4/3;
+      }
+
+      .section-title-wrapper {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="section-title-wrapper">
+  <div class="section-title">Studios</div>
+</div>
+<main id="mainContainer"></main>
+
+<script>
+  const modules = [
+    { title: "The Office of Ordinary Things", image: "images/TOOT Mon Wide.jpg", description: "Innovative architectural studio specializing in sustainable urban design solutions." },
+    { title: "Leap", image: "images/LEAP Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+    { title: "Pentagram", image: "images/Pentagram Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+    { title: "A-Side", image: "images/A-Side Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+    { title: "Field", image: "images/Field Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+    { title: "The Liminal Space", image: "images/The Liminal Space Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+    { title: "How & How", image: "images/How & How Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+    { title: "Instruct", image: "images/Instruct Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+    { title: "Order", image: "images/Order Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+    { title: "From Form", image: "images/From Form Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." }
+  ];
+
+  const main = document.getElementById('mainContainer');
+
+  modules.forEach((module) => {
+    const moduleEl = document.createElement('div');
+    moduleEl.className = 'content-module';
+
+    moduleEl.innerHTML = `
+      <div class="content-wrapper">
+        <div class="image-container">
+          <img src="${module.image}" alt="${module.title}" class="content-image">
+        </div>
+        <div class="text-content">
+          <h2 class="column-heading">${module.title}</h2>
+          <p class="column-body">${module.description}</p>
+        </div>
+      </div>
+    `;
+
+    main.appendChild(moduleEl);
+  });
+</script>
+</body>
+</html>

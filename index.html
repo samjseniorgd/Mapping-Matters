@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SJSGD Mapping-Matters</title>
+  <title>SJS.GD Mapping-Matters</title>
   <style>
     @font-face {
       font-family: 'YoungSerif';
@@ -47,11 +47,16 @@
       left: 30px;
       right: 30px;
       bottom: 45px;
-      display: none;
+      display: flex;
       align-items: center;
       justify-content: center;
       background: #ffffff;
-      z-index: 100;
+      z-index: 2;
+      opacity: 1;
+    }
+
+    .column-title:hover {
+      font-style: italic;
     }
 
     .preview-image {
@@ -89,12 +94,21 @@
       left: 30px;
       font-weight: bold;
       color: #1d252d;
-      text-transform: normal;
       font-size: 2rem;
       letter-spacing: 0.03rem;
       padding-bottom: 10px;
       border-bottom: 3px solid #1d252d;
       width: calc(100% - 60px);
+      text-decoration: none;
+    }
+
+    .column-title:hover {
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    .column-title:hover::after {
+      content: " ↗";
     }
 
     .scroll-indicators {
@@ -165,10 +179,35 @@
     .column-content::-webkit-scrollbar {
       display: none;
     }
+
+    .intro-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4rem;
+      color: #1d252d;
+      font-family: 'YoungSerif', serif;
+      text-align: center;
+      line-height: 1.1; /* tighter line height */
+      text-transform: normal;
+      max-width: 60ch; /* slightly wider text box */
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .intro-text span {
+      display: block;
+    }
   </style>
 </head>
 <body>
   <div class="top-section">
+    
+    <div class="intro-text">
+      My Mapping Matters page is a curation of studios, practitioners and projects that resonate with my own practice and future ambitions; it is an exploration of my position in the graphic design industry.
+    </div>
+
     <div class="preview-container" id="previewContainer">
       <img class="preview-image" id="previewImage">
     </div>
@@ -177,17 +216,17 @@
   <div class="bottom-section">
     <div class="columns-container" id="columnsContainer">
       <div class="column">
-        <div class="column-title">Studios</div>
+        <a href="studios.html?column=1" class="column-title">Studios</a>
         <div class="scroll-indicators" id="scrollIndicators"></div>
         <div class="column-content column-1"></div>
       </div>
       <div class="column">
-        <div class="column-title">Practitioners</div>
+        <a href="studios.html?column=2" class="column-title">Practitioners</a>
         <div class="scroll-indicators"></div>
         <div class="column-content column-2"></div>
       </div>
       <div class="column">
-        <div class="column-title">Projects</div>
+        <a href="studios.html?column=3" class="column-title">Projects</a>
         <div class="scroll-indicators"></div>
         <div class="column-content column-3"></div>
       </div>
@@ -195,28 +234,6 @@
   </div>
 
   <script>
-    function smoothScrollTo(container, target, duration) {
-      const start = container.scrollTop;
-      const startTime = performance.now();
-
-      function animateScroll(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        container.scrollTop = start + (target - start) * progress;
-        if (progress < 1) {
-          requestAnimationFrame(animateScroll);
-        }
-      }
-      requestAnimationFrame(animateScroll);
-    }
-
-    function scrollToStep(container, target, duration) {
-      return new Promise(resolve => {
-        smoothScrollTo(container, target, duration);
-        setTimeout(resolve, duration);
-      });
-    }
-
     const modules = [
       { title: "The Office of Ordinary Things", column: 1, image: "images/TOOT Mon Wide.jpg", description: "Innovative architectural studio specializing in sustainable urban design solutions." },
       { title: "Leap", column: 1, image: "images/LEAP Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
@@ -262,13 +279,12 @@
     columns.forEach((column, columnIndex) => {
       const content = column.querySelector('.column-content');
       const indicators = column.querySelector('.scroll-indicators');
-      const columnClass = `column-${columnIndex + 1}`;
       const relevantModules = modules.filter(m => m.column === columnIndex + 1);
 
       const template = `
         <div class="content-module">
           <div class="image-container">
-            <img src="{{image}}" class="content-image" alt="{{title}}">
+            <img src="{{image}}" class="content-image" alt="{{title}}" />
           </div>
           <div class="text-content">
             <h2 class="column-heading">{{title}}</h2>
@@ -352,6 +368,26 @@
         behavior: 'smooth'
       });
     }, { passive: false });
+
+    function scrollToStep(container, target, duration) {
+      return new Promise(resolve => {
+        const start = container.scrollTop;
+        const startTime = performance.now();
+
+        function animateScroll(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          container.scrollTop = start + (target - start) * progress;
+          if (progress < 1) {
+            requestAnimationFrame(animateScroll);
+          } else {
+            resolve();
+          }
+        }
+
+        requestAnimationFrame(animateScroll);
+      });
+    }
 
     function renderTemplate(str, data) {
       return str.replace(/{{(.*?)}}/g, (_, key) => data[key.trim()]);
