@@ -52,19 +52,14 @@
     .content-module {
       height: 100vh;
       scroll-snap-align: start;
-      padding: 160px 30px 30px;
-      border-bottom: 3px solid #1d252d;
-    }
-
-    .content-module:last-child {
-      border-bottom: none;
+      padding: 160px 30px 160px; /* Equal top/bottom padding */
     }
 
     .content-wrapper {
       display: grid;
       grid-template-columns: 55fr 45fr;
       gap: 30px;
-      height: calc(100vh - 193px);
+      height: calc(100vh - 320px); /* Adjusted for equal padding */
       max-width: 1600px;
       margin: 0 auto;
     }
@@ -110,7 +105,7 @@
       .content-module {
         height: auto;
         min-height: 100vh;
-        padding: 120px 20px 60px;
+        padding: 120px 20px 120px; /* Equal top/bottom padding */
       }
 
       .image-container {
