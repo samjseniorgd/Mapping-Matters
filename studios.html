@@ -20,7 +20,7 @@
 
     .section-title-wrapper {
       position: fixed; top: 0; left: 0; width: 100%;
-      background: #fff; z-index: 10; padding: 1.56% 0;
+      background: #fff; z-index: 100; padding: 2.5% 0;
       border-bottom: 3px solid #1d252d;
     }
     .section-title-inner {
@@ -30,28 +30,25 @@
     .section-title {
       position: relative;
       font-size: 2.5rem; font-weight: bold; color: #1d252d;
-      padding-left: 60px; /* make room for the arrow */
     }
-    .section-arrow {
+    .section-title:hover {
+      font-weight: bold;
+      font-style: italic;
+    }
+    .section-title:hover::before {
+      content: "←Index";
       position: absolute;
-      left: 0%;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #1d252d;
-      pointer-events: none;
-      font-family: 'YoungSerif', serif;
-      z-index: 11; /* Ensure visibility */
+      font-style: italic;
     }
-    .section-arrow-link {
+    .section-title::before {
+      content: "Studios";
       position: absolute;
-      left: 0;
-      top: 0;
-      width: 50px;
-      height: 100%;
-      z-index: 12; /* Higher than arrow */
+      top: 50%;
+      transform: translateY(-50%);
     }
+
     .scroll-indicators {
       position: absolute;
       top: 50%;
@@ -74,6 +71,7 @@
 
     .content-module {
       height: 100vh; scroll-snap-align: start; padding: 160px 0 160px;
+      margin-top: 120px; /* Adjust to avoid overlap with the fixed header */
     }
     .content-wrapper {
       display: grid; grid-template-columns: 55fr 45fr; gap: 1.56%;
@@ -95,103 +93,100 @@
 
   <div class="section-title-wrapper">
     <div class="section-title-inner">
-      <div class="section-title">
-        <a href="index.html" class="section-arrow-link">
-          <span class="section-arrow">←</span>
-        </a>
-        Studios
-      </div>
+      <a href="index.html" class="section-title" data-default="Studios" data-hover="Index"></a>
       <div class="scroll-indicators" id="scrollIndicators"></div>
     </div>
   </div>
 
   <main id="mainContainer"></main>
 
-  <script>
-    const modules = [
-      { title: "The Office of Ordinary Things", column: 1, image: "images/TOOT Mon Wide.jpg", description: "Innovative architectural studio specializing in sustainable urban design solutions." },
-      { title: "Leap", column: 1, image: "images/LEAP Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
-      { title: "Pentagram", column: 1, image: "images/Pentagram Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
-      { title: "A-Side", column: 1, image: "images/A-Side Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
-      { title: "Field", column: 1, image: "images/Field Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
-      { title: "The Liminal Space", column: 1, image: "images/The Liminal Space Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
-      { title: "How & How", column: 1, image: "images/How & How Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
-      { title: "Instruct", column: 1, image: "images/Instruct Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
-      { title: "Order", column: 1, image: "images/Order Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
-      { title: "From Form", column: 1, image: "images/From Form Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
-    ];
+<script>
+const modules = [
+  { title: "The Office of Ordinary Things", column: 1, image: "images/TOOT Mon Wide.jpg", description: "Innovative architectural studio specializing in sustainable urban design solutions." },
+  { title: "Leap", column: 1, image: "images/LEAP Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+  { title: "Pentagram", column: 1, image: "images/Pentagram Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+  { title: "A-Side", column: 1, image: "images/A-Side Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+  { title: "Field", column: 1, image: "images/Field Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+  { title: "The Liminal Space", column: 1, image: "images/The Liminal Space Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+  { title: "How & How", column: 1, image: "images/How & How Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+  { title: "Instruct", column: 1, image: "images/Instruct Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+  { title: "Order", column: 1, image: "images/Order Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+  { title: "From Form", column: 1, image: "images/From Form Mon Wide.jpg", description: "Mixed-use development featuring integrated green spaces and renewable energy systems." },
+];
 
-    const circled = ['\u24EA','\u2460','\u2461','\u2462','\u2463','\u2464','\u2465','\u2466','\u2467','\u2468'];
-    const filled =  ['\u24FF','\u2776','\u2777','\u2778','\u2779','\u277A','\u277B','\u277C','\u277D','\u277E'];
+const circled = ['\u2460','\u2461','\u2462','\u2463','\u2464','\u2465','\u2466','\u2467','\u2468','\u2789'];
+const filled  = ['\u2776','\u2777','\u2778','\u2779','\u277A','\u277B','\u277C','\u277D','\u277E','\u277F'];
 
-    const main = document.getElementById('mainContainer');
-    const scrollIndicators = document.getElementById('scrollIndicators');
-    let currentIndex = 0, isCycling = false, indicatorSpans = [];
+const main = document.getElementById('mainContainer');
+const scrollIndicators = document.getElementById('scrollIndicators');
+let currentIndex = 0, isCycling = false, indicatorSpans = [];
 
-    function updateIndicators(idx) {
-      indicatorSpans.forEach((el,i)=>el.textContent = i===idx ? filled[i] : circled[i]);
-      currentIndex = idx;
+function updateIndicators(idx) {
+  indicatorSpans.forEach((el,i)=>el.textContent = i===idx ? filled[i] : circled[i]);
+  currentIndex = idx;
+}
+
+modules.forEach((mod, i) => {
+  const sec = document.createElement('div');
+  sec.className = 'content-module';
+  sec.innerHTML = `
+    <div class="content-wrapper">
+      <div class="image-container">
+        <img src="${mod.image}" class="content-image" alt="" />
+      </div>
+      <div class="text-content">
+        <h2 class="column-heading">${mod.title}</h2>
+        <p class="column-body">${mod.description}</p>
+      </div>
+    </div>`;
+  main.appendChild(sec);
+
+  const dot = document.createElement('span');
+  dot.className = 'scroll-indicator';
+  dot.textContent = circled[i];
+  dot.addEventListener('click',()=> {
+    if(isCycling||i===currentIndex) return;
+    isCycling=true;
+    const step = i>currentIndex?1:-1;
+    (function cycle(){
+      const next = currentIndex + step;
+      main.children[next].scrollIntoView({behavior:'auto'});
+      updateIndicators(next);
+      if(next!==i) setTimeout(cycle,600);
+      else isCycling=false;
+    })();
+  });
+  scrollIndicators.appendChild(dot);
+  indicatorSpans.push(dot);
+});
+
+// Fix IntersectionObserver
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting && !isCycling) {
+      const idx = [...main.children].indexOf(e.target);
+      updateIndicators(idx);
     }
+  });
+}, { root: main, threshold: 0.5 });
 
-    modules.forEach((mod, i) => {
-      const sec = document.createElement('div');
-      sec.className = 'content-module';
-      sec.innerHTML = `
-        <div class="content-wrapper">
-          <div class="image-container">
-            <img src="${mod.image}" class="content-image" alt="" />
-          </div>
-          <div class="text-content">
-            <h2 class="column-heading">${mod.title}</h2>
-            <p class="column-body">${mod.description}</p>
-          </div>
-        </div>`;
-      main.appendChild(sec);
+[...main.children].forEach(child => observer.observe(child));
 
-      const dot = document.createElement('span');
-      dot.className = 'scroll-indicator';
-      dot.textContent = circled[i];
-      dot.addEventListener('click',()=> {
-        if(isCycling||i===currentIndex) return;
-        isCycling=true;
-        const step = i>currentIndex?1:-1;
-        (function cycle(){
-          const next = currentIndex + step;
-          main.children[next].scrollIntoView({behavior:'auto'});
-          updateIndicators(next);
-          if(next!==i) setTimeout(cycle,600);
-          else isCycling=false;
-        })();
-      });
-      scrollIndicators.appendChild(dot);
-      indicatorSpans.push(dot);
-    });
+const sectionInner = document.querySelector('.section-title-inner');
+const scrollIndicatorsContainer = document.getElementById('scrollIndicators');
 
-    new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if(e.isIntersecting && !isCycling) {
-          const idx = [...main.children].indexOf(e.target);
-          updateIndicators(idx);
-        }
-      });
-    }, { root: main, threshold: 0.5 })
-    .observe(...main.children);
-
-    const sectionInner = document.querySelector('.section-title-inner');
-    const scrollIndicatorsContainer = document.getElementById('scrollIndicators');
-
-    function positionIndicators(){
-      const firstHeading = document.querySelector('.column-heading');
-      if(!firstHeading) return;
-      const hRect = firstHeading.getBoundingClientRect();
-      const sRect = sectionInner.getBoundingClientRect();
-      const leftOffset = hRect.left - sRect.left;
-      scrollIndicatorsContainer.style.left = `${leftOffset}px`;
-    }
-    window.addEventListener('resize', positionIndicators);
-    positionIndicators(); 
-    updateIndicators(0);
-  </script>
+function positionIndicators(){
+  const firstHeading = document.querySelector('.column-heading');
+  if(!firstHeading) return;
+  const hRect = firstHeading.getBoundingClientRect();
+  const sRect = sectionInner.getBoundingClientRect();
+  const leftOffset = hRect.left - sRect.left;
+  scrollIndicatorsContainer.style.left = `${leftOffset}px`;
+}
+window.addEventListener('resize', positionIndicators);
+positionIndicators(); 
+updateIndicators(0);
+</script>
 
 </body>
 </html>
