@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SJSGD Mapping-Matters - Projects</title>
+  <style>
+    @font-face {
+      font-family: 'YoungSerif';
+      src: url('Fonts/YoungSerif-Regular.otf') format('opentype');
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: 'YoungSerif', serif; background: #fff; overflow: hidden; }
+    main {
+      height: 100vh; overflow-y: scroll;
+      scroll-snap-type: y mandatory; scroll-behavior: smooth;
+      -ms-overflow-style: none; scrollbar-width: none;
+    }
+    main::-webkit-scrollbar { display: none; }
+
+    .section-title-wrapper {
+      position: fixed; top: 0; left: 0; width: 100%;
+      background: #fff; z-index: 100; padding: 2.5% 0;
+      border-bottom: 3px solid #1d252d;
+    }
+    .section-title-inner {
+      position: relative;
+      max-width: 1600px; margin: 0 auto; padding: 0 1.56%;
+    }
+    .section-title {
+      position: relative;
+      font-size: 2.5rem; font-weight: bold; color: #1d252d;
+    }
+    .section-title:hover {
+      font-weight: bold;
+      font-style: italic;
+    }
+    .section-title:hover::before {
+      content: "←Index";
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-style: italic;
+    }
+    .section-title::before {
+      content: "Projects";
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .scroll-indicators {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex; gap: 8px;
+    }
+    .scroll-indicator {
+      cursor: pointer; font-size: 2.5rem; color: #1d252d;
+      transition: transform .2s ease;
+      user-select: none;
+    }
+    .scroll-indicator:hover { transform: scale(1.15); }
+
+    @media (max-width: 768px) {
+      .section-title-wrapper { padding: 20px 0; }
+      .section-title-inner { padding: 0 20px; }
+      .scroll-indicator { font-size: 1.5rem; }
+      .content-module { padding: 120px 20px 120px; }
+    }
+
+    .content-module {
+      height: 100vh; scroll-snap-align: start; padding: 160px 0 160px;
+      margin-top: 120px; /* Adjust to avoid overlap with the fixed header */
+    }
+    .content-wrapper {
+      display: grid; grid-template-columns: 55fr 45fr; gap: 1.56%;
+      height: calc(100vh - 320px);
+      max-width: 1600px; margin: 0 auto; padding: 0 1.56%;
+    }
+    .image-container { background: #f0f0f0; overflow: hidden; }
+    .content-image { width: 100%; height: 100%; object-fit: cover; }
+    .text-content { display: flex; flex-direction: column; gap: 20px; }
+    .column-heading { font-size: 1.5rem; font-weight: 600; color: #1d252d; }
+    .column-body {
+      font-size: 1rem; line-height: 1.5; color: #1d252d;
+      overflow-y: auto; -ms-overflow-style: none; scrollbar-width: none;
+    }
+    .column-body::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="section-title-wrapper">
+    <div class="section-title-inner">
+      <a href="index.html" class="section-title" data-default="Projects" data-hover="Index"></a>
+      <div class="scroll-indicators" id="scrollIndicators"></div>
+    </div>
+  </div>
+
+  <main id="mainContainer"></main>
+
+<script>
+const modules = [
+{ title: "Seed Folk", column: 3, image: "images/Seed Folk Mon Wide.jpg", description: "Seed Folk’s identity was brought to life by the creative agency They That Do, drawing deeply on the rich visual language of historical botanical illustration and the community-centric culture of allotments. The resulting design weaves together themes of growth, collaboration, and a deep respect for the natural world. The visual identity celebrates the beauty of plants and shared cultivation, evoking a sense of belonging and interconnectedness. By integrating vibrant colour palettes, intricate botanical motifs, and references to traditional horticultural practices, the brand fosters an appreciation for nature and sustainable living. Seed Folk’s identity perfectly mirrors its mission to nurture not only plants but also meaningful community connections, offering a space where people can gather, grow together, and reconnect with the land." },
+      { title: "Aruba Conservation Foundation", column: 3, image: "images/Aruba Conservation Foundation Mon Wide.jpg", description: "How & How undertook the rebrand of the Aruba Conservation Foundation, repositioning it as the “Voice of Nature” to strengthen its advocacy mission. The refreshed identity amplifies the foundation’s commitment to safeguarding Aruba’s unique ecosystems and biodiversity. By combining bold, organic visuals with a refined, approachable aesthetic, How & How created a system that resonates with both local communities and international audiences. The rebrand encapsulates the vibrancy of Aruba’s natural landscapes while communicating urgency and authority in environmental stewardship. It equips the foundation to speak more compellingly to stakeholders, policymakers, and the wider public, empowering it to inspire greater engagement and participation in conservation efforts." },
+      { title: "WasteAge", column: 3, image: "images/WasteAge Mon Wide.jpg", description: "Spin’s design of the Waste Age exhibition at the London Design Museum boldly confronted the pressing issue of global waste through arresting graphic design and innovative exhibition techniques. They crafted a visual language that underscored both the scale of the problem and the potential for design-led solutions. A central feature was the use of a repurposed typeface, a clever nod to the exhibition’s themes of reuse and recycling. The graphics were both striking and thought-provoking, designed to provoke reflection and challenge visitors’ assumptions about consumption and waste. Spin’s work elevated the exhibition from a simple presentation of facts into a dynamic, immersive experience that inspired audiences to imagine new possibilities for sustainable futures and rethink their relationship with materials and waste." },
+      { title: "National Trust Quarry Bank", column: 3, image: "images/Quarry Bank Mon Wide.jpg", description: "Instruct rebranded Quarry Bank, one of Britain’s most significant industrial heritage sites, by drawing out the tension and harmony between its history of labour and its enduring sense of community. Their approach used layered typographic narratives and a sensitive visual system to communicate both the weight of the site’s industrial past and its relevance today. The rebrand bridged the historical and contemporary by carefully balancing references to the mill’s legacy with modern design sensibilities. Instruct’s work breathed new life into Quarry Bank, helping to attract modern visitors while preserving its rich historical narrative. The identity deepens the visitor experience by offering fresh ways to engage with the complex stories of work, social reform, and community that define the site." },
+      { title: "Don't Cry Wolf", column: 3, image: "images/Don't Cry Wolf Mon Wide.jpg", description: "LEAP crafted a clear-cut, sustainable identity and website for Don’t Cry Wolf, a PR agency known for its transparent, no-nonsense approach and social impact ethos. Their design stripped away unnecessary ornamentation to prioritise clarity, honesty, and purpose-driven communication. The clean typography, bold graphics, and minimal colour palette reflected the agency’s straightforward philosophy, projecting confidence and integrity. Sustainability was embedded in every aspect of the project–from the choice of materials to the energy-efficient digital infrastructure–aligning perfectly with the agency’s values. LEAP’s work ensured that Don’t Cry Wolf’s message was communicated with maximum impact, helping the agency to stand out as a thought leader in ethical PR and meaningful communications." },
+      { title: "The Wild Escape", column: 3, image: "images/The Wild Escape Mon Wide.jpg", description: "Field created the identity and microsite for The Wild Escape, a nationwide project designed to inspire creativity and a deeper connection with nature among children and families through museums. Their design was playful yet sophisticated, using bold colours, friendly typography, and whimsical illustrations to spark curiosity and imagination. Field’s work encouraged young audiences to see museums as vibrant, interactive spaces where they could explore both art and the natural world. The microsite was intuitive and engaging, offering interactive content that complemented museum visits and extended the experience into homes and classrooms. The project as a whole cultivated a sense of wonder, helping the next generation foster a lifelong relationship with nature through creative expression and discovery." },
+      { title: "New York Botanical Gardens", column: 3, image: "images/New York Botanical Gardens Mon Wide.jpg", description: "Wolf Olins reimagined the brand identity of the New York Botanical Garden, one of the world’s premier plant science institutions, with a vision that merged scientific authority and natural vibrancy. The refreshed identity used elegant, organic typography and a lush colour palette to reflect both the rigour of botanical research and the sensory richness of the garden’s diverse collections. Wolf Olins’ design system allowed the Garden to present itself as both an esteemed research institution and a welcoming, immersive cultural destination. The rebrand elevated the visitor experience, strengthening the Garden’s ability to communicate its dual role as a leader in plant science and a sanctuary of natural beauty accessible to all." },
+      { title: "Daylight", column: 3, image: "images/Daylight Mon Wide.jpg", description: "The Office of Ordinary Things designed a brand for Daylight Computers that reflects the company’s mission to create distraction-free, mindful technology. Their identity drew inspiration from natural rhythms–specifically the sun’s path and circadian cycles–to craft a calming, focused visual system. Soft, warm tones combined with simple, elegant typography to create an aesthetic that promotes clarity and serenity. This mindful approach to branding paralleled Daylight’s commitment to reducing cognitive overload in technology use. The design not only communicated the product’s benefits but also underscored the importance of thoughtful, human-centred design in our relationship with digital tools, offering users a peaceful, balanced alternative in an often overstimulated digital landscape." },
+      { title: "C-Skins", column: 3, image: "images/C-Skins Mon Wide.jpg", description: "A-Side rebranded C-Skins, a pioneering surf brand, by merging typographic experimentation with innovative surf culture aesthetics to produce a fresh, dynamic identity. Their approach broke away from traditional surf branding clichés, instead offering a bold, contemporary vision that resonated with a younger, adventurous audience. A-Side’s design utilised unconventional type treatments, kinetic layouts, and a striking colour palette to capture the energy and technical innovation of C-Skins’ products. The identity reflected the brand’s position at the cutting edge of surf technology while honouring the spirit of exploration and connection to the ocean. The rebrand repositioned C-Skins as a leader in both design and performance within the surf industry." },
+      { title: "Cottage Road Cinema", column: 3, image: "images/Cottage Road Cinema Mon Wide.jpg", description: "OTTO Creative Studio reimagined the brand of Cottage Road Cinema, an iconic and much-loved Leeds venue, infusing it with renewed energy while honouring its historic charm. Drawing inspiration from the building’s distinctive architectural features, OTTO created a visual identity that was both nostalgic and modern. Playful typography, warm colour palettes, and charming graphic motifs captured the character of the cinema while making it approachable and inviting for contemporary audiences. The rebrand positioned Cottage Road Cinema as not just a place to watch films but a cherished community hub. It ensured the venue maintained its historic legacy while appealing to new generations of moviegoers seeking authentic, memorable experiences." }
+];
+
+const circled = ['\u2460','\u2461','\u2462','\u2463','\u2464','\u2465','\u2466','\u2467','\u2468','\u2789'];
+const filled  = ['\u2776','\u2777','\u2778','\u2779','\u277A','\u277B','\u277C','\u277D','\u277E','\u277F'];
+
+const main = document.getElementById('mainContainer');
+const scrollIndicators = document.getElementById('scrollIndicators');
+let currentIndex = 0, isCycling = false, indicatorSpans = [];
+
+function updateIndicators(idx) {
+  indicatorSpans.forEach((el,i)=>el.textContent = i===idx ? filled[i] : circled[i]);
+  currentIndex = idx;
+}
+
+modules.forEach((mod, i) => {
+  const sec = document.createElement('div');
+  sec.className = 'content-module';
+  sec.innerHTML = `
+    <div class="content-wrapper">
+      <div class="image-container">
+        <img src="${mod.image}" class="content-image" alt="" />
+      </div>
+      <div class="text-content">
+        <h2 class="column-heading">${mod.title}</h2>
+        <p class="column-body">${mod.description}</p>
+      </div>
+    </div>`;
+  main.appendChild(sec);
+
+  const dot = document.createElement('span');
+  dot.className = 'scroll-indicator';
+  dot.textContent = circled[i];
+  dot.addEventListener('click',()=> {
+    if(isCycling||i===currentIndex) return;
+    isCycling=true;
+    const step = i>currentIndex?1:-1;
+    (function cycle(){
+      const next = currentIndex + step;
+      main.children[next].scrollIntoView({behavior:'auto'});
+      updateIndicators(next);
+      if(next!==i) setTimeout(cycle,600);
+      else isCycling=false;
+    })();
+  });
+  scrollIndicators.appendChild(dot);
+  indicatorSpans.push(dot);
+});
+
+// Fix IntersectionObserver
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting && !isCycling) {
+      const idx = [...main.children].indexOf(e.target);
+      updateIndicators(idx);
+    }
+  });
+}, { root: main, threshold: 0.5 });
+
+[...main.children].forEach(child => observer.observe(child));
+
+const sectionInner = document.querySelector('.section-title-inner');
+const scrollIndicatorsContainer = document.getElementById('scrollIndicators');
+
+function positionIndicators(){
+  const firstHeading = document.querySelector('.column-heading');
+  if(!firstHeading) return;
+  const hRect = firstHeading.getBoundingClientRect();
+  const sRect = sectionInner.getBoundingClientRect();
+  const leftOffset = hRect.left - sRect.left;
+  scrollIndicatorsContainer.style.left = `${leftOffset}px`;
+}
+window.addEventListener('resize', positionIndicators);
+positionIndicators(); 
+updateIndicators(0);
+</script>
+
+</body>
+</html>

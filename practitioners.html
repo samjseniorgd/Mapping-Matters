@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SJSGD Mapping-Matters - Practitioners</title>
+  <style>
+    @font-face {
+      font-family: 'YoungSerif';
+      src: url('Fonts/YoungSerif-Regular.otf') format('opentype');
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: 'YoungSerif', serif; background: #fff; overflow: hidden; }
+    main {
+      height: 100vh; overflow-y: scroll;
+      scroll-snap-type: y mandatory; scroll-behavior: smooth;
+      -ms-overflow-style: none; scrollbar-width: none;
+    }
+    main::-webkit-scrollbar { display: none; }
+
+    .section-title-wrapper {
+      position: fixed; top: 0; left: 0; width: 100%;
+      background: #fff; z-index: 100; padding: 2.5% 0;
+      border-bottom: 3px solid #1d252d;
+    }
+    .section-title-inner {
+      position: relative;
+      max-width: 1600px; margin: 0 auto; padding: 0 1.56%;
+    }
+    .section-title {
+      position: relative;
+      font-size: 2.5rem; font-weight: bold; color: #1d252d;
+    }
+    .section-title:hover {
+      font-weight: bold;
+      font-style: italic;
+    }
+    .section-title:hover::before {
+      content: "←Index";
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-style: italic;
+    }
+    .section-title::before {
+      content: "Practitioners";
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .scroll-indicators {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex; gap: 8px;
+    }
+    .scroll-indicator {
+      cursor: pointer; font-size: 2.5rem; color: #1d252d;
+      transition: transform .2s ease;
+      user-select: none;
+    }
+    .scroll-indicator:hover { transform: scale(1.15); }
+
+    @media (max-width: 768px) {
+      .section-title-wrapper { padding: 20px 0; }
+      .section-title-inner { padding: 0 20px; }
+      .scroll-indicator { font-size: 1.5rem; }
+      .content-module { padding: 120px 20px 120px; }
+    }
+
+    .content-module {
+      height: 100vh; scroll-snap-align: start; padding: 160px 0 160px;
+      margin-top: 120px; /* Adjust to avoid overlap with the fixed header */
+    }
+    .content-wrapper {
+      display: grid; grid-template-columns: 55fr 45fr; gap: 1.56%;
+      height: calc(100vh - 320px);
+      max-width: 1600px; margin: 0 auto; padding: 0 1.56%;
+    }
+    .image-container { background: #f0f0f0; overflow: hidden; }
+    .content-image { width: 100%; height: 100%; object-fit: cover; }
+    .text-content { display: flex; flex-direction: column; gap: 20px; }
+    .column-heading { font-size: 1.5rem; font-weight: 600; color: #1d252d; }
+    .column-body {
+      font-size: 1rem; line-height: 1.5; color: #1d252d;
+      overflow-y: auto; -ms-overflow-style: none; scrollbar-width: none;
+    }
+    .column-body::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="section-title-wrapper">
+    <div class="section-title-inner">
+      <a href="index.html" class="section-title" data-default="Practitioners" data-hover="Index"></a>
+      <div class="scroll-indicators" id="scrollIndicators"></div>
+    </div>
+  </div>
+
+  <main id="mainContainer"></main>
+
+<script>
+const modules = [
+{ title: "Edd Carr", column: 2, image: "images/Edd Car Mon Wide.jpg", description: "Edd Carr is an animator and director who focuses on creating carbon-neutral animations that highlight ecological crises. His work addresses some of the most pressing environmental issues of our time, using animation as a powerful tool to raise awareness and drive change. Edd’s animations are not only visually compelling but also informative, providing clear and engaging narratives about the challenges we face in the fight against climate change. As the co-director of the Sustainable Darkroom, a project dedicated to advancing eco-friendly photography practices, Edd is also a leader in the push for sustainability in the creative industries. His work is a testament to the potential of design and animation to educate, inspire, and make a tangible impact on environmental conservation efforts." },
+      { title: "Giorgia Lupi", column: 2, image: "images/Giorgia Lupi Mon Wide.jpg", description: "Giorgia Lupi is a partner at Pentagram, where she specialises in humanising data through creative storytelling. Her work transforms complex data into poetic narratives that are not only visually captivating but also deeply insightful. Giorgia believes that data should not be dry or impersonal; instead, it should be presented in a way that resonates with people on a human level. Her approach to data visualisation combines aesthetics with clarity, making data more accessible and relatable to a broader audience. By bringing a sense of empathy to her work, Giorgia is able to reveal patterns and insights that might otherwise go unnoticed, helping to make data a tool for deeper understanding and action." },
+      { title: "Thijs Biersteker", column: 2, image: "images/Thijs Biersteker Mon Wide.jpg", description: "Thijs Biersteker is an eco-artist who collaborates with scientists to visualise environmental issues through immersive art. Through his work, he aims to raise awareness about the urgent need for action on climate change and other environmental challenges. Thijs uses art as a medium to engage people with scientific data, making complex issues more approachable and emotionally resonant. His immersive installations and eco-art pieces are designed to provoke thought and inspire action, offering audiences new ways to think about the environment and their role in protecting it. Thijs believes in the power of collaboration between artists and scientists to create solutions that are both visually striking and scientifically grounded." },
+      { title: "Jacobo Cobián Sánchez", column: 2, image: "images/Jacobo Cobián Sánchez Mon Wide.jpg", description: "Jacobo Cobián Sánchez is a designer at Spin Studio, where he works on revitalising communities through space and public design. Jacobo believes that design has the power to transform public spaces, creating environments that foster a sense of community and belonging. His work focuses on the intersection of design and social impact, creating spaces that are both functional and aesthetically inspiring. Whether working on urban regeneration projects or community-driven design initiatives, Jacobo’s goal is to create spaces that bring people together and support their well-being." },
+      { title: "Claire Huss", column: 2, image: "images/Claire Huss Mon Wide.jpg", description: "Claire Huss is a designer with a focus on publication and exhibition design, particularly within the fashion and beauty industries. She is passionate about integrating sustainable materials and circular design principles into her work, ensuring that her designs not only look beautiful but also reflect her commitment to ethical practices. Claire’s work is known for its tactile quality, creating experiences that are both visually and physically engaging. Her focus on sustainability extends to every aspect of her practice, from the materials she uses to the processes she employs. By integrating circular design principles into her work, Claire ensures that her designs have a minimal environmental impact, proving that beautiful design can also be responsible." },
+      { title: "Harry Pearce", column: 2, image: "images/Harry Pearce Mon Wide.jpg", description: "Harry Pearce, a partner at Pentagram, is renowned for crafting visual identities that blend clarity, cultural relevance, and typographic precision. His work spans a wide range of industries, but his designs always share a common goal: to communicate a message clearly and effectively. Harry’s approach to design is meticulous, focusing on every detail to ensure that each element serves a purpose. His work often involves creating visual systems that are both flexible and enduring, ensuring that brands can grow and evolve while maintaining a strong, consistent identity. Harry’s focus on typography is particularly noteworthy, as he believes that typefaces are not just decorative elements but essential tools for effective communication." },
+      { title: "Mike McQuade", column: 2, image: "images/Mike McQuade Mon Wide.jpg", description: "Mike McQuade is an artist and designer whose work blends collage, illustration, and design to explore contemporary storytelling. He is known for his playful approach to design, using textures, patterns, and vibrant colours to create narratives that are both visually rich and thought-provoking. Mike’s work often explores themes of identity, memory, and modern life, creating designs that feel both personal and universal. His use of collage and illustration allows him to layer meaning, creating designs that invite viewers to engage and reflect. Through his work, Mike explores the power of storytelling, using design as a medium to share stories that resonate with today’s audiences." },
+      { title: "Talia Cotton", column: 2, image: "images/Talia Cotton Mon Wide.jpg", description: "Talia Cotton is a designer and creative coder based at Cotton Studio, where she pushes the boundaries of computational design by merging typography, code, and AI. Talia’s work is focused on expanding the possibilities of design in the digital age, exploring how technology can be used to create innovative, interactive experiences. Her projects often involve the use of AI to generate new design solutions, challenging traditional notions of authorship and creativity. Talia’s work exemplifies how technology can be harnessed to create design that is both functional and artistically compelling, pushing the envelope of what’s possible in the field of computational design." },
+      { title: "Chantal Jahchan", column: 2, image: "images/Chantal Jachan Mon Wide.jpg", description: "Chantal Jahchan is a designer and illustrator known for blending design with tech-driven storytelling to create inclusive digital experiences. Her work focuses on making digital spaces more accessible, ensuring that technology is used to foster connections rather than create barriers. Chantal is particularly interested in the intersection of design, illustration, and technology, using these tools to craft experiences that are engaging and user-friendly. Her designs often incorporate interactive elements that invite users to engage with content in new and exciting ways. Chantal’s focus on inclusivity ensures that her digital projects are welcoming and accessible to all users, regardless of their background or abilities." },
+      { title: "Oscar Warr", column: 2, image: "images/Oscar Warr Mon Wide.jpg", description: "Oscar Warr is a designer who fuses speculative design with surrealism to explore humanity’s relationship with nature. His work often imagines alternative futures or reinterprets the present, offering fresh perspectives on the ways we interact with the environment. Oscar’s designs invite viewers to think beyond the conventional, challenging preconceived notions about the natural world and our place within it. Through his use of surrealism and speculative design, Oscar encourages audiences to consider new possibilities and rethink the role of design in shaping a sustainable future. His work is thought-provoking and visionary, offering a glimpse into a future where humanity and nature exist in harmony." },
+];
+
+const circled = ['\u2460','\u2461','\u2462','\u2463','\u2464','\u2465','\u2466','\u2467','\u2468','\u2789'];
+const filled  = ['\u2776','\u2777','\u2778','\u2779','\u277A','\u277B','\u277C','\u277D','\u277E','\u277F'];
+
+const main = document.getElementById('mainContainer');
+const scrollIndicators = document.getElementById('scrollIndicators');
+let currentIndex = 0, isCycling = false, indicatorSpans = [];
+
+function updateIndicators(idx) {
+  indicatorSpans.forEach((el,i)=>el.textContent = i===idx ? filled[i] : circled[i]);
+  currentIndex = idx;
+}
+
+modules.forEach((mod, i) => {
+  const sec = document.createElement('div');
+  sec.className = 'content-module';
+  sec.innerHTML = `
+    <div class="content-wrapper">
+      <div class="image-container">
+        <img src="${mod.image}" class="content-image" alt="" />
+      </div>
+      <div class="text-content">
+        <h2 class="column-heading">${mod.title}</h2>
+        <p class="column-body">${mod.description}</p>
+      </div>
+    </div>`;
+  main.appendChild(sec);
+
+  const dot = document.createElement('span');
+  dot.className = 'scroll-indicator';
+  dot.textContent = circled[i];
+  dot.addEventListener('click',()=> {
+    if(isCycling||i===currentIndex) return;
+    isCycling=true;
+    const step = i>currentIndex?1:-1;
+    (function cycle(){
+      const next = currentIndex + step;
+      main.children[next].scrollIntoView({behavior:'auto'});
+      updateIndicators(next);
+      if(next!==i) setTimeout(cycle,600);
+      else isCycling=false;
+    })();
+  });
+  scrollIndicators.appendChild(dot);
+  indicatorSpans.push(dot);
+});
+
+// Fix IntersectionObserver
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting && !isCycling) {
+      const idx = [...main.children].indexOf(e.target);
+      updateIndicators(idx);
+    }
+  });
+}, { root: main, threshold: 0.5 });
+
+[...main.children].forEach(child => observer.observe(child));
+
+const sectionInner = document.querySelector('.section-title-inner');
+const scrollIndicatorsContainer = document.getElementById('scrollIndicators');
+
+function positionIndicators(){
+  const firstHeading = document.querySelector('.column-heading');
+  if(!firstHeading) return;
+  const hRect = firstHeading.getBoundingClientRect();
+  const sRect = sectionInner.getBoundingClientRect();
+  const leftOffset = hRect.left - sRect.left;
+  scrollIndicatorsContainer.style.left = `${leftOffset}px`;
+}
+window.addEventListener('resize', positionIndicators);
+positionIndicators(); 
+updateIndicators(0);
+</script>
+
+</body>
+</html>
